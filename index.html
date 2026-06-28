@@ -659,7 +659,7 @@
     <h1 class="cover" style="font-size: 76px; margin: 12px 0 22px;">Ten ways to lock<br>a borrowing rate. <em>One<br>isn&#x2019;t live yet</em><span class="accent-dot">.</span></h1>
 
     <p class="subtitle" style="font-size: 19px; max-width: 940px; margin-bottom: 32px;">
-      A side-by-side of the protocols that let a borrower fix an interest rate for a defined term &mdash; the growing niche beneath variable-rate giants like Aave and Morpho Blue. Ten core mechanisms, one still pre-mainnet, a field still measured in the low hundreds of millions and led by borrower-credit shop Wildcat &mdash; and an institutional RWA tier next door that dwarfs them all.
+      Every other corner of DeFi lets the borrowing rate float. Here, ten teams are trying to nail it down for a fixed term &mdash; the niche beneath variable-rate giants like Aave and Morpho Blue. Strip away the mechanism names and they are ten bets on one hard problem: how to make a fixed rate liquid when every maturity is its own market. Ten mechanisms, one still pre-mainnet, the whole DeFi-native field worth a few hundred million and led by borrower-credit shop Wildcat. The honest caveat: the institutional RWA tier next door is ~50&times; bigger, and that is where the real money already sits.
     </p>
 
     <div class="two-col-asym" style="gap: 56px;">
@@ -669,7 +669,7 @@
           <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Morpho Midnight</strong> · intent-based fixed-term credit markets <span class="prelaunch-badge">Pre-launch</span></li>
           <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Term Finance</strong> · weekly sealed-bid rate auctions</li>
           <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>TermMax</strong> · tokenized bonds + AMM range orders</li>
-          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Fira</strong> · tokenized fixed-maturity bonds &mdash; <span class="hl-accent">large loan book, ~$5M net TVL</span></li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Fira</strong> · tokenized fixed-maturity bonds &mdash; <span class="hl-accent">big on paper, ~$5M once you net it</span></li>
           <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Secured Finance</strong> · on-chain order book for zero-coupon bonds</li>
           <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Inverse Finance (FiRM)</strong> · DOLA Borrowing Rights (DBR)</li>
           <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Exactly Protocol</strong> · per-maturity fixed-rate pools</li>
@@ -683,7 +683,7 @@
         <div class="proof-headline">
           <span class="battle-label">Combined field size · loans + TVL, Jun 2026</span><br>
           <span class="battle-figure"><span class="num">~$300M</span></span>
-          <p style="font-size: 14.5px; color: var(--muted); max-width: 320px;">&mdash; the field is still small and led by borrower-credit shop <strong>Wildcat</strong> (~$150M outstanding), with <strong>Liquity V2</strong> (~$74M) next. <strong>Fira</strong> launched in early 2026 and posts a large headline loan book, but on a <em>netted</em> basis its on-chain TVL is only <strong>~$5M</strong> &mdash; so by net TVL it sits near the bottom, not the top. The category&#x2019;s former giant <strong>Notional</strong> wound down after the Nov 2025 Balancer hack. The institutional RWA tier next door is still <strong>~50&times;</strong> bigger.</p>
+          <p style="font-size: 14.5px; color: var(--muted); max-width: 320px;">&mdash; and most of that is two names. Borrower-credit shop <strong>Wildcat</strong> (~$150M outstanding) and <strong>Liquity V2</strong> (~$74M) are the bulk of the field. <strong>Fira</strong> looks like the leader on a ~$425M headline &mdash; until you net out the collateral it loops through itself and that number collapses to <strong>~$5M</strong> of real on-chain value. The metric was doing the marketing. <strong>Notional</strong> once topped ~$843M and still wound down after the Nov 2025 Balancer hack; scale was never what kept anyone alive. And the institutional RWA tier next door is still <strong>~50&times;</strong> bigger than all of this combined.</p>
         </div>
       </div>
     </div>
@@ -729,7 +729,7 @@
 
     <div class="callout" style="margin-top: 28px;">
       <h4>The shape of the field</h4>
-      <p>True fixed-rate borrowing remains a smaller but growing corner of DeFi. It is most compelling exactly where variable rates are most painful &mdash; <strong>institutional treasuries, RWA financing, and rate hedging</strong>.</p>
+      <p>Floating rates are fine until someone has to budget &mdash; which is the whole reason fixed income exists in the first place. On-chain that corner is still small, but it bites exactly where variable rates hurt most: <strong>institutional treasuries, RWA financing, and rate hedging</strong>. The demand is obvious; the on-chain liquidity to serve it is the part still missing.</p>
     </div>
 
     <div class="footer"><span>Fixed-Rate Borrowing Landscape</span><span>R3 · Internal Brief</span></div>
@@ -877,7 +877,7 @@
           </tr>
           <tr class="matrix-takeaway">
             <td>Takeaway</td>
-            <td colspan="6">The field divides by <em>how the rate is discovered</em> &mdash; auction, bond price, order book, token-you-hold, intent, pool utilization, swap, or borrower decree. By net TVL the leader is <strong>Wildcat (~$150M)</strong>, with <strong>Liquity V2 (~$74M)</strong> next; the rest are under ~$75M. <strong>Fira</strong>, live since early 2026, shows a large gross loan book but nets to only <strong>~$5M</strong> of on-chain TVL. The former champion <strong>Notional (~$843M)</strong> wound down after the Balancer hack, and the most-hyped entrant, Morpho Midnight, <strong>isn&#x2019;t live yet</strong>. (Sky&#x2019;s <strong>Spark</strong> lends at a far larger ~$4.7B &mdash; but at a governance-<em>administered</em> rate, not a true fixed term.)</td>
+            <td colspan="6">The field divides on one thing: <em>how the rate is discovered</em> &mdash; auction, bond price, order book, a token you hold, an intent, pool utilization, a swap, or simple borrower decree. Rank it by net TVL, the only honest cross-protocol ruler, and <strong>Wildcat (~$150M)</strong> leads with <strong>Liquity V2 (~$74M)</strong> behind it; everything else is under ~$75M. <strong>Fira</strong> shows a huge gross loan book that nets to <strong>~$5M</strong> &mdash; the loan book is real, the on-chain float is not. <strong>Notional (~$843M)</strong> is gone after the Balancer hack, and the most-hyped name, Morpho Midnight, <strong>still isn&#x2019;t live</strong>. (Sky&#x2019;s <strong>Spark</strong> lends ~$4.7B &mdash; but at a rate governance can change, so it is not a fixed term.)</td>
           </tr>
         </tbody>
       </table>
@@ -943,7 +943,7 @@
   <section class="slide">
     <div class="top-bar" data-slide="07 / 13"><span>The tokenized-bond model</span></div>
     <h2>Turn the loan into a <em>tradable bond</em>.</h2>
-    <p class="subtitle">Express a fixed rate as a discounted token that redeems at par on maturity &mdash; the on-chain equivalent of a zero-coupon bond. The pioneer of this model, Notional, is gone (see the graveyard, page 12). It is now the most crowded &mdash; and most consequential &mdash; corner of the field: <strong>TermMax</strong> on an AMM, <strong>Fira</strong> on supply-and-demand markets, and <strong>Secured Finance</strong> on a true order book.</p>
+    <p class="subtitle">Strip the jargon and it is the oldest trick in fixed income: sell a dollar for ninety cents today, repay a dollar at maturity &mdash; a zero-coupon bond with a wallet address. The model&#x2019;s pioneer, <strong>Notional</strong>, is now in the graveyard (page 12), which tells you most of what you need: this is the most crowded corner of the field and the one that has already buried its leader. Three live attempts remain &mdash; <strong>TermMax</strong> on an AMM, <strong>Fira</strong> on supply-and-demand markets, and <strong>Secured Finance</strong> on a real order book.</p>
 
     <div style="margin-top: 12px;">
       <div class="protocol-grid">
@@ -1248,7 +1248,7 @@
 
     <h1 style="margin-top: 24px;">The DeFi-native fixed-rate field is<br>still a <em>niche</em>. The institutional money<br>has already moved <em>next door</em><span class="accent-dot">.</span></h1>
 
-    <p class="subtitle" style="color:#B5AC9D; max-width: 880px; margin-top: 8px;">Among the natives, by net TVL the leader is borrower-credit shop <strong>Wildcat</strong> (~$150M), with <strong>Liquity V2</strong> (~$74M) next; <strong>Fira</strong>&#x2019;s headline loan book nets to only ~$5M, the former giant Notional wound down after the Balancer hack, and Morpho Midnight&#x2019;s intent model is still face-down. But the real balance sheets are in the ~$15B of tokenized Treasuries and the RWA-credit tier &mdash; Maple, Centrifuge &mdash; that dwarf them more than ever.</p>
+    <p class="subtitle" style="color:#B5AC9D; max-width: 880px; margin-top: 8px;">The honest take: by net TVL the DeFi-native field is <strong>Wildcat</strong> (~$150M) and <strong>Liquity V2</strong> (~$74M), and not much else &mdash; <strong>Fira</strong>&#x2019;s headline nets to ~$5M, Notional is gone, Morpho Midnight still isn&#x2019;t live. The mechanisms are inventive; the demand is not here yet. The real balance sheets already moved next door, into ~$15B of tokenized Treasuries and the <strong>Maple</strong> / <strong>Centrifuge</strong> credit tier that dwarfs this whole list. So the open question isn&#x2019;t whether fixed-rate borrowing matters on-chain &mdash; in TradFi it is most of credit &mdash; but what finally brings the volume: a better mechanism, clearer regulation, or institutional distribution?</p>
 
     <div class="closing-stats">
       <div class="stat-block"><div class="stat-sm"><span class="accent">10</span></div><p>core fixed-rate borrowing protocols</p></div>
