@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fixed-Rate Borrowing Protocols — DeFi Landscape Brief</title>
+<meta name="description" content="A side-by-side of the ten DeFi protocols that let a borrower lock a fixed interest rate — mechanism, TVL and status as of June 2026 — plus the ~$15B institutional RWA tier next door.">
+
+<!-- Favicon — inline SVG padlock (the Rate.Lock motif); no external file needed -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%231A1816%22%2F%3E%3Cpath%20d%3D%22M11%2015%20V12%20a5%205%200%200%201%2010%200%20V15%22%20fill%3D%22none%22%20stroke%3D%22%23F2EBDD%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%228.5%22%20y%3D%2214.5%22%20width%3D%2215%22%20height%3D%2210.6%22%20rx%3D%222.2%22%20fill%3D%22%23C44A36%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2218.7%22%20r%3D%221.7%22%20fill%3D%22%231A1816%22%2F%3E%3Crect%20x%3D%2215.2%22%20y%3D%2219.5%22%20width%3D%221.6%22%20height%3D%223.4%22%20rx%3D%220.8%22%20fill%3D%22%231A1816%22%2F%3E%3C%2Fsvg%3E">
+<meta name="theme-color" content="#1A1816">
+
+<!-- Social preview / Open Graph -->
+<!-- IMPORTANT: og:image / twitter:image must be an ABSOLUTE https URL for link
+     previews to render on X, LinkedIn, Slack, Facebook, iMessage, etc. The
+     relative filename below assumes Fixed-rate-v4-og.png sits beside this page
+     when hosted. Once you know the URL, replace both with e.g.
+     https://your-domain.com/Fixed-rate-v4-og.png (and set og:url to the page). -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ten ways to lock a borrowing rate. One isn't live yet.">
+<meta property="og:description" content="A side-by-side of the ten DeFi protocols that let a borrower lock a fixed interest rate — mechanism, TVL and status (June 2026) — plus the ~$15B institutional RWA tier next door.">
+<meta property="og:image" content="Fixed-rate-v4-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rate.Lock landscape brief — ten DeFi fixed-rate protocols, ~$300M field led by Wildcat, ~$15B tokenized Treasuries next door, one still pre-mainnet.">
+<meta property="og:site_name" content="R3 — DeFi Landscape Brief">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ten ways to lock a borrowing rate. One isn't live yet.">
+<meta name="twitter:description" content="A side-by-side of the ten DeFi protocols that let a borrower lock a fixed interest rate — mechanism, TVL and status (June 2026) — plus the ~$15B institutional RWA tier next door.">
+<meta name="twitter:image" content="Fixed-rate-v4-og.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EBDD;
+    --bg-dark: #1A1816;
+    --ink: #1A1816;
+    --muted: #6B6359;
+    --rule: #D9D1C0;
+    --accent: #C44A36;
+    --accent-soft: #F4D8CF;
+    --highlight: #F5E69A;
+    --olive: #7A6E4F;
+    --label: #5A5247;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .slide {
+    padding: 72px 80px 56px;
+    border-bottom: 1px solid var(--rule);
+    min-height: 720px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .slide.dark {
+    background: var(--bg-dark);
+    color: #F2EBDD;
+  }
+
+  .slide.dark .label,
+  .slide.dark .footer-text { color: #B5AC9D; }
+
+  .slide.dark .rule { border-color: #3a342e; }
+
+  /* HEADER */
+  .top-bar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--label);
+    text-transform: uppercase;
+    margin-bottom: 56px;
+  }
+  .top-bar[data-slide]::after {
+    content: attr(data-slide);
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+  }
+  .slide.dark .top-bar[data-slide]::after { color: #B5AC9D; }
+
+  /* PROTOCOL BADGE */
+  .protocol-badge {
+    display: inline-flex;
+    align-items: stretch;
+  }
+  .protocol-badge .num-block {
+    background: var(--accent);
+    color: #F2EBDD;
+    padding: 10px 18px;
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+  }
+  .protocol-badge .name-block {
+    background: var(--ink);
+    color: #F2EBDD;
+    padding: 10px 22px;
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+  }
+  .top-bar.protocol-bar { margin-bottom: 32px; }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink);
+  }
+  .logo .dot { color: var(--accent); }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--label);
+    font-weight: 500;
+  }
+
+  /* HEADLINES */
+  h1.cover {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 92px;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 24px 0 32px;
+    color: var(--ink);
+  }
+  h1.cover em {
+    font-style: italic;
+    font-weight: 400;
+  }
+  h1.cover .accent-dot { color: var(--accent); }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 16px 0 28px;
+    color: var(--ink);
+  }
+  h2 em { font-style: italic; }
+
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 28px;
+    margin: 0 0 12px;
+    line-height: 1.2;
+  }
+  h3 em { font-style: italic; }
+
+  h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--label);
+    font-weight: 500;
+    margin: 0 0 8px;
+  }
+
+  .rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 24px 0;
+  }
+
+  .subtitle {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 720px;
+    line-height: 1.5;
+  }
+
+  /* HIGHLIGHT */
+  .hl {
+    background: var(--highlight);
+    padding: 0 4px;
+  }
+  .hl-accent {
+    color: var(--accent);
+  }
+
+  /* COVER */
+  .cover-slide {
+    min-height: 0;
+    padding-bottom: 32px;
+    background:
+      linear-gradient(var(--bg), var(--bg)),
+      repeating-linear-gradient(0deg, transparent 0 39px, rgba(0,0,0,0.04) 39px 40px),
+      repeating-linear-gradient(90deg, transparent 0 39px, rgba(0,0,0,0.04) 39px 40px);
+    background-blend-mode: multiply;
+  }
+
+  .cover-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .cover-meta .col h4 { margin-bottom: 6px; }
+  .cover-meta .col p {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    margin: 0;
+  }
+
+  /* GRID LAYOUTS */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    flex: 1;
+  }
+  .two-col-asym {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    flex: 1;
+  }
+
+  .stat {
+    font-family: 'Fraunces', serif;
+    font-size: 64px;
+    line-height: 1;
+    margin: 8px 0 4px;
+  }
+  .stat-sm {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    line-height: 1;
+  }
+  .stat .accent { color: var(--accent); }
+  .stat-label {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    padding: 22px 26px;
+    border-radius: 2px;
+  }
+  .callout h4 { color: var(--accent); margin-bottom: 6px; }
+  .callout p { margin: 4px 0; }
+  .callout .stat-sm { color: var(--accent); }
+
+  .callout-dark {
+    background: #2a2520;
+    color: #F2EBDD;
+    padding: 14px 22px;
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* TABLE – comparison matrix */
+  .matrix-wrap {
+    overflow-x: auto;
+    margin-top: 16px;
+  }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  table.matrix thead th {
+    text-align: left;
+    padding: 14px 12px;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 400;
+    border-bottom: 1px solid var(--ink);
+    vertical-align: bottom;
+    color: var(--ink);
+  }
+  table.matrix thead th:first-child {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--label);
+    font-weight: 500;
+  }
+  table.matrix tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  table.matrix tbody td:first-child {
+    font-weight: 500;
+    color: var(--label);
+    width: 14%;
+  }
+  table.matrix a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  table.matrix a:hover { border-bottom-color: var(--accent); }
+  table.matrix tbody tr { transition: background 0.15s ease; }
+  table.matrix tbody tr:hover { background: rgba(196,74,54,0.04); }
+
+  /* DEFAULT TABLE */
+  table.defaults {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+  table.defaults thead th {
+    text-align: left;
+    padding: 12px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--label);
+    font-weight: 500;
+    border-bottom: 1px solid var(--ink);
+  }
+  table.defaults tbody td {
+    padding: 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  table.defaults tbody tr.total td {
+    font-weight: 600;
+    border-bottom: none;
+    background: rgba(196, 74, 54, 0.06);
+  }
+  table.defaults tbody td:first-child {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+  }
+
+  /* PROTOCOL CARDS */
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: 60px 1fr 220px;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .protocol-grid:last-child { border-bottom: none; }
+  .num {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .protocol-grid .body p { margin: 0 0 10px; font-size: 14px; line-height: 1.55; }
+  .protocol-grid .body ul { margin: 8px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; }
+  .protocol-grid .body ul li { margin-bottom: 6px; }
+  .edge {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 16px;
+    line-height: 1.3;
+    border-left: 1px solid var(--accent);
+    padding-left: 16px;
+  }
+  .edge .edge-label {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--label);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* OBSERVATIONS */
+  .obs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 48px;
+  }
+  .obs {
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+  }
+  .obs .obs-num {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .obs h3 {
+    font-size: 20px;
+    margin: 0 0 10px;
+  }
+  .obs ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; }
+  .obs ul li { margin-bottom: 4px; }
+  .obs ul li strong { color: var(--accent); font-weight: 500; }
+
+  /* FOOTER */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 32px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--label);
+  }
+
+  /* CLOSING */
+  .closing h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    max-width: 1000px;
+  }
+  .closing h1 em { font-style: italic; }
+  .closing .accent-dot { color: var(--accent); }
+
+  .closing-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: auto;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+  }
+  .closing-stats .stat-block .stat-sm {
+    font-size: 32px;
+  }
+  .closing-stats .stat-block p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 4px 0 0;
+  }
+  .slide.dark .closing-stats .stat-block p { color: #B5AC9D; }
+  .slide.dark .closing-stats .stat-block .stat-sm { color: #F2EBDD; }
+  .slide.dark .closing-stats .stat-block .stat-sm .accent { color: var(--accent); }
+
+  /* TOC */
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 48px;
+    margin-top: 32px;
+  }
+  .toc a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+  }
+  .toc a:hover { color: var(--accent); }
+  .toc a .num-sm {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--label);
+  }
+
+  /* WATERFALL VIZ */
+  .waterfall {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 16px;
+  }
+  .tier {
+    padding: 14px 18px;
+    border: 1px solid var(--rule);
+    background: rgba(255,255,255,0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  .tier.senior { border-left: 3px solid var(--olive); }
+  .tier.mid { border-left: 3px solid #C99B6E; }
+  .tier.junior { border-left: 3px solid var(--accent); background: var(--accent-soft); }
+  .tier .tier-name { font-family: 'Fraunces', serif; font-size: 16px; }
+  .tier .tier-yield { color: var(--accent); font-weight: 500; }
+  .tier { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .tier:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+  /* Body emphasis */
+  strong { font-weight: 600; }
+  em { font-style: italic; }
+  p { margin: 0 0 12px; }
+  p, li { line-height: 1.65; }
+
+  /* GLOSSARY BAR */
+  .glossary-bar {
+    background: var(--accent-soft);
+    padding: 14px 22px;
+    border-left: 3px solid var(--accent);
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 16px 0 24px;
+    color: var(--ink);
+  }
+  .glossary-bar strong { font-weight: 600; color: var(--accent); }
+  .glossary-bar .sep { color: var(--rule); margin: 0 8px; }
+
+  /* MATRIX — header protocol dots, row icons, alternation, takeaway */
+  table.matrix thead th .proto-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  table.matrix tbody td .proto-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  table.matrix tbody tr:nth-child(even) td { background: rgba(0,0,0,0.018); }
+  table.matrix tbody tr:hover td { background: rgba(196,74,54,0.05); }
+  table.matrix tr.matrix-takeaway td {
+    background: var(--ink) !important;
+    color: #F2EBDD;
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.45;
+    padding: 16px 12px;
+    border-bottom: none;
+  }
+  table.matrix tr.matrix-takeaway td:first-child {
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* PROOF HEADLINE */
+  .proof-headline { margin-top: 4px; }
+  .proof-headline .battle-label {
+    display: inline-block;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 9px;
+    margin-bottom: 14px;
+  }
+  .proof-headline .battle-figure {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    display: inline-block;
+    border-bottom: 4px solid var(--accent);
+    padding-bottom: 4px;
+    margin-bottom: 14px;
+  }
+  .proof-headline .battle-figure .num { color: var(--accent); }
+
+  /* PRE-LAUNCH BADGE */
+  .prelaunch-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 3px 8px;
+    margin-left: 10px;
+    vertical-align: middle;
+    border-radius: 1px;
+  }
+
+  @media (max-width: 900px) {
+    .slide { padding: 40px 32px; }
+    .two-col, .two-col-asym, .obs-grid, .closing-stats, .toc { grid-template-columns: 1fr; }
+    h1.cover { font-size: 56px; }
+    h2 { font-size: 32px; }
+    .protocol-grid { grid-template-columns: 1fr; }
+    .matrix-wrap { overflow-x: auto; }
+    table.matrix { font-size: 11.5px; }
+    .two-col, .obs-grid { gap: 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ============ COVER ============ -->
+  <section class="slide cover-slide">
+    <span class="label" style="color: var(--accent); margin-bottom: 14px;">Fixed-Rate Borrowing in DeFi · Landscape Brief · June 2026</span>
+
+    <h1 class="cover" style="font-size: 76px; margin: 12px 0 22px;">Ten ways to lock<br>a borrowing rate. <em>One<br>isn&#x2019;t live yet</em><span class="accent-dot">.</span></h1>
+
+    <p class="subtitle" style="font-size: 19px; max-width: 940px; margin-bottom: 32px;">
+      A side-by-side of the protocols that let a borrower fix an interest rate for a defined term &mdash; the growing niche beneath variable-rate giants like Aave and Morpho Blue. Ten core mechanisms, one still pre-mainnet, a field still measured in the low hundreds of millions and led by borrower-credit shop Wildcat &mdash; and an institutional RWA tier next door that dwarfs them all.
+    </p>
+
+    <div class="two-col-asym" style="gap: 56px;">
+      <div>
+        <h4 style="margin-bottom: 14px;">The ten core protocols</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14.5px; line-height: 1.5;">
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Morpho Midnight</strong> · intent-based fixed-term credit markets <span class="prelaunch-badge">Pre-launch</span></li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Term Finance</strong> · weekly sealed-bid rate auctions</li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>TermMax</strong> · tokenized bonds + AMM range orders</li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Fira</strong> · tokenized fixed-maturity bonds &mdash; <span class="hl-accent">large loan book, ~$5M net TVL</span></li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Secured Finance</strong> · on-chain order book for zero-coupon bonds</li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Inverse Finance (FiRM)</strong> · DOLA Borrowing Rights (DBR)</li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Exactly Protocol</strong> · per-maturity fixed-rate pools</li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>IPOR</strong> · interest-rate swaps / hedging overlay</li>
+          <li style="padding: 9px 0; border-bottom: 1px solid var(--rule);"><strong>Wildcat Finance</strong> · borrower-set custom credit markets</li>
+          <li style="padding: 9px 0;"><strong>Liquity V2</strong> · borrower-set rate on the BOLD stablecoin</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="proof-headline">
+          <span class="battle-label">Combined field size · loans + TVL, Jun 2026</span><br>
+          <span class="battle-figure"><span class="num">~$300M</span></span>
+          <p style="font-size: 14.5px; color: var(--muted); max-width: 320px;">&mdash; the field is still small and led by borrower-credit shop <strong>Wildcat</strong> (~$150M outstanding), with <strong>Liquity V2</strong> (~$74M) next. <strong>Fira</strong> launched in early 2026 and posts a large headline loan book, but on a <em>netted</em> basis its on-chain TVL is only <strong>~$5M</strong> &mdash; so by net TVL it sits near the bottom, not the top. The category&#x2019;s former giant <strong>Notional</strong> wound down after the Nov 2025 Balancer hack. The institutional RWA tier next door is still <strong>~50&times;</strong> bigger.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-meta">
+      <div class="col"><h4>As of</h4><p>21 June 2026</p></div>
+      <div class="col"><h4>Sources</h4><p>DefiLlama · protocol docs</p></div>
+      <div class="col"><h4>Scope</h4><p>Fixed-rate, fixed-term borrowing</p></div>
+      <div class="col"><h4>Field</h4><p>10 core + adjacents</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 02 — WHY FIXED-RATE ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="02 / 13"><span>Why the niche exists</span></div>
+    <h2>Variable rates float.<br><em>Fixed</em> rates let you plan.</h2>
+
+    <div class="glossary-bar">
+      <strong>Fixed-rate</strong> the interest cost is known at the moment you borrow, not re-priced block by block.<span class="sep">|</span><strong>Fixed-term</strong> the loan has a defined maturity date.<span class="sep">|</span>Most DeFi lending (Aave, Morpho Blue) is the opposite &mdash; <em>variable-rate, open-term</em> pools where the rate moves with utilization.
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h4>Why borrowers want it</h4>
+        <ul style="padding-left: 18px;">
+          <li><strong>Cash-flow planning</strong> &mdash; a treasury can budget an exact interest expense.</li>
+          <li><strong>Institutional mandates</strong> &mdash; many desks cannot hold open-ended floating-rate exposure.</li>
+          <li><strong>Hedging</strong> &mdash; lock a cost ahead of expected rate volatility.</li>
+          <li><strong>Structured products</strong> &mdash; fixed legs are the building block for leverage, looping and RWA financing.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Why it&#x2019;s still a small slice</h4>
+        <ul style="padding-left: 18px;">
+          <li><strong>Liquidity fragmentation</strong> &mdash; every maturity is its own market, so depth is split many ways.</li>
+          <li><strong>Rollover risk</strong> &mdash; someone has to refinance at maturity.</li>
+          <li><strong>Capital-efficiency drag</strong> &mdash; matched terms are harder to keep fully utilized than an always-on pool.</li>
+        </ul>
+        <p style="font-size: 13.5px; color: var(--muted); margin-top: 12px;">The ten protocols ahead are really ten <em>different bets</em> on how to beat these three problems.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 28px;">
+      <h4>The shape of the field</h4>
+      <p>True fixed-rate borrowing remains a smaller but growing corner of DeFi. It is most compelling exactly where variable rates are most painful &mdash; <strong>institutional treasuries, RWA financing, and rate hedging</strong>.</p>
+    </div>
+
+    <div class="footer"><span>Fixed-Rate Borrowing Landscape</span><span>R3 · Internal Brief</span></div>
+  </section>
+
+  <!-- ============ 03 — WORKED EXAMPLE ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="03 / 13"><span>One borrower, nine routes</span></div>
+    <h2>Borrow <em>10 ETH</em> for three months.<br>Nine ways to lock the rate.</h2>
+    <p class="subtitle">Same goal &mdash; a predictable cost on a 3-month loan &mdash; routed through each protocol&#x2019;s native mechanism.</p>
+
+    <div class="matrix-wrap">
+      <table class="defaults">
+        <thead>
+          <tr><th style="width: 22%;">Protocol</th><th>How you&#x2019;d lock the 3-month rate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Term Finance</td><td>Bid in the relevant <strong>weekly sealed-bid auction</strong>; you pay the single market-clearing rate.</td></tr>
+          <tr><td>TermMax</td><td>Mint/take <strong>FT</strong> via an AMM <strong>Range Order</strong> at the 3-month market.</td></tr>
+          <tr><td>Fira</td><td>Open a position in the 3-month market; the <strong>Bond Token</strong> you mint locks the rate, and you can sell the <strong>Coupon Token</strong> for upfront yield.</td></tr>
+          <tr><td>Secured Finance</td><td>Place a limit order in the 3-month <strong>order book</strong>; you mint a tokenized <strong>zero-coupon bond</strong> (&ldquo;ZC ETH&hellip;&rdquo;) at the matched rate.</td></tr>
+          <tr><td>Inverse (FiRM)</td><td>Buy the required <strong>DBR</strong> at market price &mdash; that price <em>is</em> your locked rate.</td></tr>
+          <tr><td>Morpho Midnight</td><td>Submit an <strong>intent</strong> for a fixed-rate / fixed-term match <span class="prelaunch-badge">once live</span></td></tr>
+          <tr><td>Exactly</td><td>Lock the rate straight from the <strong>3-month maturity pool</strong> (priced off its utilization).</td></tr>
+          <tr><td>IPOR</td><td>Keep the borrow on Aave and enter a <strong>3-month rate swap</strong> to hedge the float.</td></tr>
+          <tr><td>Wildcat</td><td>Spin up a <strong>custom market</strong> with a 3-month term and whitelist the lenders.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top: 24px;">
+      <p style="margin:0;"><strong>The tell:</strong> notice how differently each one discovers the rate &mdash; an auction, a bond price, an order book, a token you hold, an intent, a pool&#x2019;s utilization, a swap, or simply whatever the borrower decrees. That mechanism is the whole story, and it&#x2019;s the spine of the matrix on the next page.</p>
+    </div>
+
+    <div class="footer"><span>Worked example</span><span>3-month, 10 ETH</span></div>
+  </section>
+
+  <!-- ============ 04 — MATRIX ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="04 / 13"><span>Side by side</span></div>
+    <h2>The <em>comparison</em> matrix.</h2>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Protocol</th>
+            <th>Core mechanism</th>
+            <th>Fixed term</th>
+            <th>Rate set by</th>
+            <th>Collateral / risk</th>
+            <th>Status &amp; TVL</th>
+            <th>Chains</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="proto-dot" style="background:#1A1816;"></span><a href="https://morpho.org/" target="_blank">Morpho Midnight</a></td>
+            <td>Intent-based P2P matching in isolated, immutable markets</td>
+            <td>Yes (fixed-maturity)</td>
+            <td>Intent matching + curators</td>
+            <td>Isolated, immutable markets</td>
+            <td><strong>Pre-mainnet</strong> &mdash; audited May&ndash;Jun 2026</td>
+            <td>EVM (planned)</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#C44A36;"></span><a href="https://www.term.finance/" target="_blank">Term Finance</a></td>
+            <td>Recurring on-chain sealed-bid auctions</td>
+            <td>Yes (weekly, up to ~1yr)</td>
+            <td>Single clearing price</td>
+            <td>Per-auction, overcollateralized</td>
+            <td>Live · ~$13M</td>
+            <td>Ethereum + BNB, Avalanche, Arbitrum, Base</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#C99B6E;"></span><a href="https://ts.finance/" target="_blank">TermMax</a></td>
+            <td>Tokenized bonds (FT/XT/GT) + AMM &ldquo;Range Orders&rdquo;</td>
+            <td>Yes (maturity dates)</td>
+            <td>AMM curve pricing</td>
+            <td>Isolated positions; 1-click leverage</td>
+            <td>Live · ~$33&ndash;49M</td>
+            <td>Ethereum + 7 more (Base, BNB, Arbitrum, Berachain&hellip;)</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#C44A36;"></span><a href="https://www.fira.money/" target="_blank">Fira</a></td>
+            <td>Tokenized fixed-maturity bonds (BT / CT / FiraWrapped); rate by supply &amp; demand</td>
+            <td>Yes (maturity dates)</td>
+            <td>Market supply/demand (not utilization)</td>
+            <td>Overcollateralized; isolated per-market</td>
+            <td><strong>Live (2026)</strong> · ~$5M net TVL <span style="color:var(--muted);">(large gross loan book, nets to ~$5M)</span></td>
+            <td>Ethereum</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#C99B6E;"></span><a href="https://secured.finance/" target="_blank">Secured Finance</a></td>
+            <td>On-chain order book (CLOB) for tokenized zero-coupon bonds; Itayose opening auction</td>
+            <td>Yes (quarterly maturities)</td>
+            <td>Order-book matching</td>
+            <td>Overcollateralized; also USDFC stablecoin</td>
+            <td>Live · ~$0.6M</td>
+            <td>Filecoin, Ethereum, Arbitrum, Polygon zkEVM, Avalanche</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#6B6359;"></span><a href="https://www.inverse.finance/firm" target="_blank">Inverse (FiRM)</a></td>
+            <td>DBR &mdash; tokenized borrowing rights for DOLA</td>
+            <td>Flexible (DBR = ~1yr units)</td>
+            <td>DBR market price</td>
+            <td>Overcollateralized DOLA</td>
+            <td>Live · ~$20M <span style="color:var(--muted);">(not ~$60M)</span></td>
+            <td>Ethereum</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#5A5247;"></span><a href="https://exact.ly/" target="_blank">Exactly</a></td>
+            <td>Fixed-rate pools + one shared variable pool</td>
+            <td>Yes (maturity dates)</td>
+            <td>Per-maturity utilization</td>
+            <td>Variable + fixed pool interaction</td>
+            <td>Live <span style="color:var(--muted);">(post-2023 hack)</span> · ~$3.8M</td>
+            <td>Optimism, Base</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#B5AC9D;"></span><a href="https://ipor.io/" target="_blank">IPOR</a></td>
+            <td>Interest-rate swaps; now pivoting to Fusion vaults</td>
+            <td>Yes (swap durations)</td>
+            <td>AMM for interest rates</td>
+            <td>Derivative overlay on Aave / Compound</td>
+            <td>Live · IRS now legacy</td>
+            <td>Ethereum, Arbitrum</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#C44A36;"></span><a href="https://wildcat.finance/" target="_blank">Wildcat</a></td>
+            <td>Borrower-led custom credit markets</td>
+            <td>Yes (borrower-set)</td>
+            <td>Set by borrower at creation</td>
+            <td>Permissioned lenders; undercollateralized</td>
+            <td>Live · ~$150M outstanding</td>
+            <td>Ethereum</td>
+          </tr>
+          <tr>
+            <td><span class="proto-dot" style="background:#C99B6E;"></span><a href="https://www.liquity.org/" target="_blank">Liquity V2</a></td>
+            <td>Overcollateralized BOLD borrowing; borrower sets own rate</td>
+            <td>Open term (rate locked until changed)</td>
+            <td>The borrower (rate sets redemption order)</td>
+            <td>Overcollateralized (ETH / LSTs) &rarr; BOLD</td>
+            <td>Live (2024) · ~$74M</td>
+            <td>Ethereum (widely forked)</td>
+          </tr>
+          <tr class="matrix-takeaway">
+            <td>Takeaway</td>
+            <td colspan="6">The field divides by <em>how the rate is discovered</em> &mdash; auction, bond price, order book, token-you-hold, intent, pool utilization, swap, or borrower decree. By net TVL the leader is <strong>Wildcat (~$150M)</strong>, with <strong>Liquity V2 (~$74M)</strong> next; the rest are under ~$75M. <strong>Fira</strong>, live since early 2026, shows a large gross loan book but nets to only <strong>~$5M</strong> of on-chain TVL. The former champion <strong>Notional (~$843M)</strong> wound down after the Balancer hack, and the most-hyped entrant, Morpho Midnight, <strong>isn&#x2019;t live yet</strong>. (Sky&#x2019;s <strong>Spark</strong> lends at a far larger ~$4.7B &mdash; but at a governance-<em>administered</em> rate, not a true fixed term.)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer"><span>Comparison matrix</span><span>TVL: DefiLlama, Jun 2026 · approximate</span></div>
+  </section>
+
+  <!-- ============ 05 — MORPHO MIDNIGHT ============ -->
+  <section class="slide">
+    <div class="top-bar protocol-bar" data-slide="05 / 13"><span>The intent-based bet</span></div>
+    <div class="protocol-badge" style="margin-bottom: 24px;">
+      <span class="num-block">01</span>
+      <span class="name-block">Morpho Midnight <span class="prelaunch-badge" style="border-color:#F2EBDD; color:#F2EBDD;">Pre-launch</span></span>
+    </div>
+    <h2>Lenders and borrowers post <em>intents</em>.<br>The market matches them at a fixed rate.</h2>
+
+    <div class="two-col">
+      <div>
+        <p>Midnight is the fixed-rate, fixed-term half of <strong>Morpho V2</strong> (the other half is Vaults V2). Instead of a shared pool, lenders and borrowers post <strong>intents</strong> &mdash; the rate and term they&#x2019;ll accept &mdash; and the protocol matches them in <strong>isolated, immutable, permissionlessly-created markets</strong>. Rate and risk are externalized to curators rather than baked into a utilization curve.</p>
+        <p>It is designed to <em>complement</em>, not replace, Morpho Blue&#x2019;s variable-rate pools, with institutional-grade fixed-rate lending as the explicit target. Non-custodial and EVM-native.</p>
+      </div>
+      <div>
+        <h4>Why it matters</h4>
+        <ul style="padding-left: 18px;">
+          <li>The most credible attempt to make fixed-rate <strong>scale</strong> via managed liquidity rather than fragmented per-maturity pools.</li>
+          <li>Backed by Morpho&#x2019;s existing distribution and curator ecosystem.</li>
+        </ul>
+        <div class="callout" style="margin-top: 18px;">
+          <h4>Status check &mdash; read this</h4>
+          <p>The whitepaper and codebase went <strong>public in late May 2026</strong>; a Cantina audit competition ran <strong>29 May &ndash; 12 Jun 2026</strong>. As of this brief it is <strong>audited but not yet on mainnet</strong> &mdash; don&#x2019;t assume it&#x2019;s usable.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>01 · Morpho Midnight</span><span>Intent-based · pre-launch</span></div>
+  </section>
+
+  <!-- ============ 06 — TERM FINANCE ============ -->
+  <section class="slide">
+    <div class="top-bar protocol-bar" data-slide="06 / 13"><span>The auction bet</span></div>
+    <div class="protocol-badge" style="margin-bottom: 24px;">
+      <span class="num-block">02</span>
+      <span class="name-block">Term Finance</span>
+    </div>
+    <h2>One <em>sealed-bid auction</em> a week sets<br>a single rate everyone pays.</h2>
+
+    <div class="two-col">
+      <div>
+        <p>Term runs <strong>recurring weekly on-chain sealed-bid auctions</strong> for terms up to ~1 year. Lenders submit the rate they&#x2019;ll accept and borrowers the rate they&#x2019;ll pay; the auction clears at a <strong>single market-clearing rate</strong> that all matched participants receive or pay &mdash; no spread, no slippage. Loans are crypto-collateralized.</p>
+        <p>The pitch is fairness and certainty: everyone in a given auction transacts at the same transparent price.</p>
+      </div>
+      <div>
+        <h4>Correction vs. earlier drafts</h4>
+        <div class="callout">
+          <p>Term is <strong>no longer Ethereum-only</strong>. It is now multi-chain &mdash; Ethereum is still ~72% of TVL, but it also runs on <strong>BNB Chain, Avalanche, Arbitrum and Base</strong>.</p>
+        </div>
+        <p style="margin-top: 16px;"><span class="label">Status</span><br>Live with recurring auctions · ~$13M TVL.</p>
+      </div>
+    </div>
+    <div class="footer"><span>02 · Term Finance</span><span>Auctions · multi-chain</span></div>
+  </section>
+
+  <!-- ============ 07 — TOKENIZED-BOND FAMILY ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="07 / 13"><span>The tokenized-bond model</span></div>
+    <h2>Turn the loan into a <em>tradable bond</em>.</h2>
+    <p class="subtitle">Express a fixed rate as a discounted token that redeems at par on maturity &mdash; the on-chain equivalent of a zero-coupon bond. The pioneer of this model, Notional, is gone (see the graveyard, page 12). It is now the most crowded &mdash; and most consequential &mdash; corner of the field: <strong>TermMax</strong> on an AMM, <strong>Fira</strong> on supply-and-demand markets, and <strong>Secured Finance</strong> on a true order book.</p>
+
+    <div style="margin-top: 12px;">
+      <div class="protocol-grid">
+        <div class="num">03</div>
+        <div class="body">
+          <h3>TermMax <span style="font-size: 14px; color: var(--muted);">(ts.finance)</span></h3>
+          <p>A fixed-rate marketplace with maturity dates, built on tokenized instruments &mdash; <strong>FT</strong> (Fixed-rate Token, a zero-coupon bond), <strong>XT</strong>, and <strong>GT</strong> (loan-position) &mdash; priced through a custom <strong>AMM</strong> using &ldquo;Range Orders.&rdquo; Isolated positions, one-click leverage/looping, passive yield vaults.</p>
+          <ul>
+            <li><strong>Correction:</strong> it <em>migrated from an orderbook to an AMM</em> &mdash; it is not &ldquo;maker-taker order matching.&rdquo; And it is live on <strong>~8 chains</strong> (Ethereum is the bulk, plus Base, BNB Chain, Arbitrum, Berachain, X Layer, Hyperliquid, BSquared), not just Ethereum + Arbitrum.</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>The most chains, and the slickest one-click leverage of the fixed-rate set.</div>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="num">04</div>
+        <div class="body">
+          <h3>Fira <span style="font-size: 14px; color: var(--muted);">(fira.money)</span> <span class="prelaunch-badge" style="color:var(--accent); border-color:var(--accent);">~$5M net TVL</span></h3>
+          <p>Fira makes <strong>fixed-rate, fixed-maturity credit a native on-chain primitive</strong>, with rates discovered by <strong>supply and demand rather than a utilization curve</strong> &mdash; producing real yield curves and defined maturities. Each position is split into composable tokens: a <strong>Bond Token</strong> (principal; trades at a discount, redeems 1:1 at maturity &mdash; a zero-coupon bond), a <strong>Coupon Token</strong> (the yield, sellable upfront), and <strong>FiraWrapped</strong> collateral. Markets are isolated, each with its own collateral, loan token and risk profile. Its pitch: &ldquo;<em>Lock rates. Sell yield. Exit anytime.</em>&rdquo;</p>
+          <ul>
+            <li><strong>The scale story &mdash; read the metric carefully:</strong> live since early 2026 (a pre-launch from 8 Jan migrated users off <strong>Euler</strong>), Fira posts a large gross loan book, on Ethereum, with six audits (Sherlock, Spearbit/Cantina, Hexens, yAudit). But DefiLlama&#x2019;s <em>netted</em> TVL &mdash; the figure that strips out recycled/looped collateral &mdash; reads only <strong>~$5M</strong>. Ranked by net TVL, the only apples-to-apples measure across the field, Fira is one of the <em>smallest</em> live protocols here, not the largest.</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>Real supply/demand yield curves with composable bond + coupon tokens &mdash; and you can sell the coupon for cash today.</div>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="num">05</div>
+        <div class="body">
+          <h3>Secured Finance <span style="font-size: 14px; color: var(--muted);">(secured.finance)</span></h3>
+          <p>The one true <strong>on-chain central-limit order book</strong> in the set. Lenders and borrowers post limit orders for tokenized <strong>zero-coupon bonds</strong> at fixed maturities; a periodic <strong>Itayose</strong> opening auction discovers the first price, then continuous matching takes over. A filled order mints a transferable ERC-20 bond (e.g. &ldquo;ZC ETH SEP2026&rdquo;). It also issues the <strong>USDFC</strong> stablecoin on Filecoin and is pushing RWA integration.</p>
+          <ul>
+            <li><strong>Caveat:</strong> mechanism-rich but tiny &mdash; <strong>~$0.6M TVL</strong>, the smallest live protocol here, spread across <strong>Filecoin</strong> (the bulk), Ethereum, Arbitrum, Polygon zkEVM and Avalanche.</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>The closest thing to a TradFi bond order book on-chain &mdash; and the only one Filecoin-native.</div>
+      </div>
+    </div>
+    <div class="footer"><span>03&ndash;05 · TermMax, Fira &amp; Secured Finance</span><span>Tokenized zero-coupon bonds</span></div>
+  </section>
+
+  <!-- ============ 08 — RATE-AS-A-TOKEN / POOLS ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="08 / 13"><span>Rights &amp; pools</span></div>
+    <h2>Price the <em>right to borrow</em>,<br>or the pool itself.</h2>
+
+    <div style="margin-top: 12px;">
+      <div class="protocol-grid">
+        <div class="num">06</div>
+        <div class="body">
+          <h3>Inverse Finance &mdash; FiRM</h3>
+          <p>Fixed-rate borrowing of the <strong>DOLA</strong> stablecoin via <strong>DBR (DOLA Borrowing Rights)</strong>: 1 DBR = the right to borrow 1 DOLA for one year, depleting over time as the interest cost. Buy the DBR you need upfront and the price you pay <em>is</em> your locked annual rate. Duration is flexible/indefinite; overcollateralized. A yield-bearing <strong>sDOLA</strong> version also exists.</p>
+          <ul>
+            <li><strong>Correction:</strong> TVL is <strong>~$20M (FiRM) / ~$26M (protocol)</strong>, not &ldquo;~$60M.&rdquo; FiRM was the safety-first redesign after Inverse&#x2019;s 2022 exploits.</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>Pay once, hold the right &mdash; rate certainty without a fixed end date.</div>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="num">07</div>
+        <div class="body">
+          <h3>Exactly Protocol</h3>
+          <p>Borrow and lend at fixed rates across specific maturities. Exactly runs <strong>fixed-rate pools (one per maturity) bridged by a single shared variable-rate pool</strong>; each maturity&#x2019;s rate is set by its own utilization.</p>
+          <ul>
+            <li><strong>Correction:</strong> this is <em>not</em> a &ldquo;decentralized Interest Rate Swap&rdquo; &mdash; its own docs note no AMM or IRS is needed. It is <strong>still live</strong>, having survived a ~$7.2M Aug-2023 exploit (re-audited, users compensated, resumed). Chains are <strong>Optimism + Base</strong> (Ethereum now dormant); ~$3.8M TVL.</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>The only one here that has taken a real hit &mdash; and kept operating.</div>
+      </div>
+    </div>
+    <div class="footer"><span>06&ndash;07 · Inverse &amp; Exactly</span><span>Borrowing rights · maturity pools</span></div>
+  </section>
+
+  <!-- ============ 09 — OVERLAY & BORROWER-LED ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="09 / 13"><span>Overlay &amp; borrower-led</span></div>
+    <h2>Hedge the float, or <em>write your own terms</em>.</h2>
+
+    <div style="margin-top: 12px;">
+      <div class="protocol-grid">
+        <div class="num">08</div>
+        <div class="body">
+          <h3>IPOR</h3>
+          <p><strong>Inter Protocol Over-block Rate.</strong> Rather than a standalone money market, IPOR&#x2019;s original product was an <strong>interest-rate swap</strong>: a borrower already on a variable-rate platform (Aave, Compound) swaps their floating rate for a fixed one &mdash; predictability without moving collateral.</p>
+          <ul>
+            <li><strong>Correction:</strong> the acronym is &ldquo;Over-<em>block</em> Rate&rdquo; (per-block on-chain data, à la LIBOR/SOFR), <em>not</em> &ldquo;Over-the-counter.&rdquo; IPOR has largely <strong>pivoted from IRS to &ldquo;Fusion,&rdquo;</strong> institutional yield-vault infrastructure; the token is migrating IPOR&rarr;FUSN. The swap product is now legacy.</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>Fix your rate without leaving Aave &mdash; if you can find swap liquidity.</div>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="num">09</div>
+        <div class="body">
+          <h3>Wildcat Finance</h3>
+          <p>A <strong>borrower-led</strong>, undercollateralized, permissioned credit protocol. The borrower defines their own market &mdash; fixed rate, reserve ratio, withdrawal cycle, lender whitelist &mdash; and Wildcat provides the rails rather than underwriting the risk. V2 launched Feb 2026; counterparties include Wintermute, Amber and Keyrock.</p>
+          <ul>
+            <li>Total customization for sophisticated borrowers; ~$150M credit outstanding. Closest in spirit to TradFi bilateral lending.</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>The borrower sets the rate &mdash; pure bespoke, on-chain.</div>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="num">10</div>
+        <div class="body">
+          <h3>Liquity V2 <span style="font-size: 14px; color: var(--muted);">(BOLD)</span></h3>
+          <p>Immutable, overcollateralized borrowing of the <strong>BOLD</strong> stablecoin against ETH and liquid-staking tokens &mdash; where <strong>each borrower sets their own annual interest rate</strong>. The catch: your chosen rate sets your <em>redemption priority</em> (the lowest-rate loans are redeemed against first), so rate-setting doubles as a continuous, market-driven defense of the peg.</p>
+          <ul>
+            <li>Live since late 2024; ~$74M TVL on Ethereum, and widely copied via its &ldquo;friendly fork&rdquo; program (Felix on HyperEVM, Nerite on Arbitrum, Quill on Scroll).</li>
+          </ul>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>Name your own rate &mdash; and wear the redemption risk that comes with it.</div>
+      </div>
+    </div>
+
+    <div class="glossary-bar" style="margin-top: 22px;">
+      <strong>Two honourable mentions on rate-setting.</strong> <strong style="color:var(--ink);">Spark</strong> (Sky / ex-MakerDAO) lends USDS at a governance-administered &ldquo;Transparent Rate&rdquo; &mdash; stable in the short run but changeable by governance, so <em>not</em> a true fixed term &mdash; yet at ~$4.7B it is larger than this entire list combined.<span class="sep">|</span><strong style="color:var(--ink);">Rheo</strong> (formerly Size Credit) runs a genuine order-book fixed-rate model on Base + Ethereum, but is now near-dormant (~$34k).
+    </div>
+
+    <div class="footer"><span>08&ndash;10 · IPOR, Wildcat &amp; Liquity V2</span><span>Overlay · borrower-defined</span></div>
+  </section>
+
+  <!-- ============ 10 — TOKENIZED T-BILLS ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="10 / 13"><span>The institutional / RWA frontier · I</span></div>
+    <h2>Tokenized T-bills: the<br>on-chain <em>risk-free rate</em>.</h2>
+    <p class="subtitle">Every fixed borrowing rate is implicitly priced against a risk-free benchmark. On-chain, that benchmark now exists &mdash; a <strong>~$15B</strong> tokenized US-Treasury market yielding a blended <strong>~3.3%</strong>, and increasingly the collateral that backs on-chain credit.</p>
+
+    <div class="two-col" style="margin-top: 8px;">
+      <div>
+        <h4>The category &mdash; ~$15B, mid-2026</h4>
+        <div class="waterfall">
+          <div class="tier senior"><span class="tier-name">Circle USYC</span><span class="tier-yield">~$3.07B</span></div>
+          <div class="tier senior"><span class="tier-name">BlackRock BUIDL</span><span class="tier-yield">~$2.37B</span></div>
+          <div class="tier mid"><span class="tier-name">Franklin Templeton BENJI</span><span class="tier-yield">~$2.4B</span></div>
+          <div class="tier mid"><span class="tier-name">Ondo USDY</span><span class="tier-yield">~$2.16B</span></div>
+          <div class="tier junior"><span class="tier-name">Superstate USTB</span><span class="tier-yield">~$838M</span></div>
+        </div>
+        <p style="font-size: 12.5px; color: var(--muted); margin-top: 10px;">Source: rwa.xyz, 21 Jun 2026 · ~82 products, blended ~3.3% 7-day APY. In 2026 Circle&#x2019;s USYC overtook BlackRock&#x2019;s BUIDL as the single largest.</p>
+      </div>
+      <div>
+        <h4>The DeFi-native issuers</h4>
+        <p style="font-size: 13.5px;"><strong>Ondo</strong> &mdash; OUSG (~$551M) + USDY (~$2.16B). Now building <strong>Ondo Chain</strong> and <strong>Ondo Global Markets</strong> (430+ tokenized stocks/ETFs; Franklin Templeton and MetaMask onboard) &mdash; its biggest 2026 thrust.</p>
+        <p style="font-size: 13.5px;"><strong>Superstate</strong> &mdash; USTB (~$838M, now <em>Invesco</em>-managed) + USCC crypto-carry (~$267M, now <em>Bitwise</em>). Coinbase Asset Management partnership.</p>
+        <p style="font-size: 13.5px;"><strong>OpenEden</strong> &mdash; TBILL (~$214M, reserves rated <em>S&amp;P AA+</em>) + USDO stablecoin (~$33M). Backed by Ripple and Anchorage.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 22px;">
+      <p style="margin:0;"><strong>Why it&#x2019;s here:</strong> these are not borrowing venues &mdash; they are the fixed-income <em>floor</em> the rest of the stack is priced against, and the collateral that increasingly backs on-chain fixed-rate credit.</p>
+    </div>
+    <div class="footer"><span>RWA frontier I · tokenized Treasuries</span><span>AUM: rwa.xyz, Jun 2026</span></div>
+  </section>
+
+  <!-- ============ 11 — INSTITUTIONAL CREDIT & RWA TRANCHING ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="11 / 13"><span>The institutional / RWA frontier · II</span></div>
+    <h2>Where fixed-rate meets<br><em>real balance sheets</em>.</h2>
+
+    <div style="margin-top: 8px;">
+      <div class="protocol-grid">
+        <div class="num">A</div>
+        <div class="body">
+          <h3>Maple Finance</h3>
+          <p>The scale leader in on-chain institutional credit: RWA-focused, fixed-term, fixed-rate <strong>private credit</strong> through permissioned pools run by credit underwriters, plus the permissionless <strong>Syrup</strong> (syrupUSDC) yield token. ~$2.1B TVL across Ethereum and Solana; ~$12B cumulative loans at ~99% repayment (note the 2022 Orthogonal ~$36M default).</p>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>The biggest real institutional loan book in DeFi.</div>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="num">B</div>
+        <div class="body">
+          <h3>Centrifuge</h3>
+          <p>The flagship <strong>RWA-tranching</strong> name. Centrifuge V3 tokenizes funds and private credit as composable <strong>deRWA</strong> tokens across ~9 EVM chains (plus Solana and Stellar). Headline funds: <strong>JAAA</strong> &mdash; the Janus Henderson Anemoy AAA CLO fund (&gt;$1B, seeded with $1B from Sky&#x2019;s Grove) &mdash; and <strong>SPXA</strong>, the first licensed tokenized S&amp;P 500 index fund. ~$1.63B TVL.</p>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>Senior/junior tranching of <em>real</em> institutional assets &mdash; the closest thing to TradFi structured credit on-chain.</div>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="num">C</div>
+        <div class="body">
+          <h3>Clearpool</h3>
+          <p>Began as uncollateralized institutional borrower pools; now repositioning around tokenized RWA credit and its own <strong>Ozean</strong> RWA L2. ~$27M TVL, now mostly on Flare &mdash; small today, an early bet on the RWA-rollup thesis rather than a scaled lender.</p>
+        </div>
+        <div class="edge"><span class="edge-label">Edge</span>A pivot in progress &mdash; watch the chain, not the current TVL.</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 20px;">
+      <h4>The institutional / RWA read</h4>
+      <p style="margin:0;">For an institutional or RWA builder, <em>this</em> tier &mdash; not the DeFi-native primitives &mdash; is where the real balance sheets sit: permissioned credit, tokenized funds, and senior/junior tranching of real-world assets, with tokenized Treasuries increasingly posted as collateral.</p>
+    </div>
+    <div class="footer"><span>RWA frontier II · credit &amp; tranching</span><span>TVL: DefiLlama, Jun 2026</span></div>
+  </section>
+
+  <!-- ============ 10 — ADJACENT & WOUND DOWN ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="12 / 13"><span>Adjacent, related &amp; retired</span></div>
+    <h2>The neighbours &mdash; and the <em>graveyard</em>.</h2>
+
+    <div class="two-col">
+      <div>
+        <h4>DeFi-native tranching <span style="text-transform:none; letter-spacing:0; color:var(--muted);">(related but distinct)</span></h4>
+        <p style="font-size: 13.5px;">These create fixed / prioritized <em>yield</em> via senior/junior tranching rather than direct fixed-rate borrowing: <strong>Strata</strong>, <strong>Knox</strong>. For RWA tranching at scale, see <strong>Centrifuge</strong> on the previous page.</p>
+        <div class="callout" style="margin-top: 18px;">
+          <h4>Moved up a tier</h4>
+          <p style="margin:0;">Maple, Clearpool and the tokenized-Treasury issuers now sit in the institutional / RWA frontier (pages 10&ndash;11) &mdash; that is where the real balance sheets are.</p>
+        </div>
+      </div>
+      <div>
+        <h4>Wound down / dormant</h4>
+        <ul style="padding-left: 18px;">
+          <li><strong>Notional Finance</strong> (fCash zero-coupon bonds) &mdash; the former category leader (~$843M, ~94% on Arbitrum), <strong>wound down after the November 2025 Balancer hack</strong>.</li>
+          <li><strong>Yield Protocol</strong> (fyTokens) &mdash; wound down Dec 2023.</li>
+          <li><strong>Element Finance &rarr; DELV</strong> &mdash; the whole effort wound down Mar 2025 (not just a rebrand).</li>
+          <li><strong>88mph</strong> &mdash; technically live, very low activity.</li>
+          <li><strong>Goldfinch</strong> &mdash; pivoted to <strong>Goldfinch Prime</strong>, institutional RWA private credit.</li>
+          <li><strong>TrueFi</strong> &mdash; uncollateralized-lending pioneer, now ~dormant (~$22K TVL); attempting an RWA reinvention (Trinity).</li>
+        </ul>
+        <h4 style="margin-top: 22px;">Removed from the v3 list</h4>
+        <ul style="padding-left: 18px;">
+          <li><strong>Pendle</strong> &amp; yield-tokenization peers &mdash; fix <em>yield</em>, not borrowing.</li>
+          <li><strong>Flashstake</strong> &mdash; yield-side and effectively defunct (~$38K TVL).</li>
+          <li><strong>Contango</strong> &mdash; pivoted to <strong>variable-rate</strong> looping; no longer fixed-rate.</li>
+          <li><strong>Royco</strong> &mdash; an &ldquo;incentivized action market,&rdquo; not a tranche protocol.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer"><span>Adjacent &amp; retired</span><span>Scope discipline</span></div>
+  </section>
+
+  <!-- ============ 11 — CROSS-CUTTING ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="13 / 13"><span>How to read the field</span></div>
+    <h2>Ten protocols, sliced <em>five ways</em>.</h2>
+
+    <div class="obs-grid" style="margin-top: 16px;">
+      <div class="obs">
+        <div class="obs-num">01</div>
+        <h3>How is the rate discovered?</h3>
+        <ul>
+          <li><strong>Auction</strong> &mdash; Term (periodic, single fair price)</li>
+          <li><strong>Bond price</strong> &mdash; TermMax (AMM) · Fira (supply/demand)</li>
+          <li><strong>Order book</strong> &mdash; Secured Finance (CLOB + Itayose)</li>
+          <li><strong>Intent match</strong> &mdash; Morpho Midnight (managed liquidity)</li>
+          <li><strong>Token you hold</strong> &mdash; Inverse DBR · <strong>Pool utilization</strong> &mdash; Exactly</li>
+          <li><strong>Swap overlay</strong> &mdash; IPOR · <strong>Borrower decree</strong> &mdash; Wildcat</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">02</div>
+        <h3>Collateral model</h3>
+        <ul>
+          <li><strong>Overcollateralized crypto</strong> &mdash; Term, TermMax, Fira, Secured Finance, Inverse, Exactly</li>
+          <li><strong>Undercollateralized / permissioned</strong> &mdash; Wildcat, Maple</li>
+          <li>This split, more than mechanism, decides who can actually use a protocol.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">03</div>
+        <h3>Capital efficiency &amp; leverage</h3>
+        <ul>
+          <li><strong>TermMax</strong> offers one-click leverage / looping inside the fixed-rate frame.</li>
+          <li>The former leverage leader, <strong>Notional</strong>, is gone &mdash; its ~$843M evaporated when it wound down after the Balancer hack.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">04</div>
+        <h3>Flexibility vs. predictability</h3>
+        <ul>
+          <li>Most offer <strong>true fixed terms</strong>.</li>
+          <li><strong>Inverse&#x2019;s DBR</strong> trades a fixed end-date for rate certainty + duration flexibility.</li>
+          <li><strong>IPOR</strong> adds predictability on top of an existing Aave borrow.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">05</div>
+        <h3>Maturity &amp; scale</h3>
+        <ul>
+          <li>Oldest: <strong>Inverse</strong> (~2020). Newest: <strong>Morpho Midnight</strong> (2026, pre-launch) and <strong>Fira</strong> (early 2026, big gross loan book but only ~$5M net TVL).</li>
+          <li>By net TVL, <strong>Wildcat</strong> (~$150M) leads, <strong>Liquity V2</strong> (~$74M) is next; most others &mdash; Fira included &mdash; are sub-$75M.</li>
+          <li>Battle-tested through an exploit: <strong>Exactly</strong> (and Inverse, twice). <strong>Notional</strong>, by contrast, did not survive the Balancer hack.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">06</div>
+        <h3>For an institutional / RWA lens</h3>
+        <ul>
+          <li>The real balance sheets sit one tier up: <strong>Maple</strong> (~$2.1B credit), <strong>Centrifuge</strong> (~$1.6B tranched funds) and a <strong>~$15B</strong> tokenized-Treasury market &mdash; far bigger than the DeFi-native primitives.</li>
+          <li>Among the natives, permissioned <strong>Wildcat</strong> maps closest to real financing; <strong>Morpho Midnight</strong> is the one to watch <em>if</em> it ships with institutional curator liquidity.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer"><span>Cross-cutting observations</span><span>The decision lenses</span></div>
+  </section>
+
+  <!-- ============ CLOSING ============ -->
+  <section class="slide closing dark">
+    <div class="top-bar" data-slide=""><span style="color:#B5AC9D;">Fixed-Rate Borrowing · DeFi</span><span class="logo" style="color:#F2EBDD;">Rate<span class="dot">.</span>Lock</span></div>
+
+    <h1 style="margin-top: 24px;">The DeFi-native fixed-rate field is<br>still a <em>niche</em>. The institutional money<br>has already moved <em>next door</em><span class="accent-dot">.</span></h1>
+
+    <p class="subtitle" style="color:#B5AC9D; max-width: 880px; margin-top: 8px;">Among the natives, by net TVL the leader is borrower-credit shop <strong>Wildcat</strong> (~$150M), with <strong>Liquity V2</strong> (~$74M) next; <strong>Fira</strong>&#x2019;s headline loan book nets to only ~$5M, the former giant Notional wound down after the Balancer hack, and Morpho Midnight&#x2019;s intent model is still face-down. But the real balance sheets are in the ~$15B of tokenized Treasuries and the RWA-credit tier &mdash; Maple, Centrifuge &mdash; that dwarf them more than ever.</p>
+
+    <div class="closing-stats">
+      <div class="stat-block"><div class="stat-sm"><span class="accent">10</span></div><p>core fixed-rate borrowing protocols</p></div>
+      <div class="stat-block"><div class="stat-sm"><span class="accent">~$300M</span></div><p>native field size · Wildcat leads (~$150M)</p></div>
+      <div class="stat-block"><div class="stat-sm"><span class="accent">~$15B</span></div><p>tokenized Treasuries next door</p></div>
+      <div class="stat-block"><div class="stat-sm"><span class="accent">1</span></div><p>still pre-mainnet · Morpho Midnight</p></div>
+    </div>
+    <div class="footer"><span style="color:#B5AC9D;">R3 · Internal landscape brief</span><span style="color:#B5AC9D;">Verified June 2026 · DefiLlama + protocol docs</span></div>
+  </section>
+
+</div>
+</body>
+</html>
