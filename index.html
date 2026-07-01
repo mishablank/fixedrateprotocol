@@ -767,9 +767,74 @@
     <div class="footer"><span>Worked example</span><span>3-month, 10 ETH</span></div>
   </section>
 
-  <!-- ============ 04 – MATRIX ============ -->
+  <!-- ============ 04 – CROSS-CUTTING ============ -->
   <section class="slide">
-    <div class="top-bar" data-slide="04 / 13"><span>Side by side</span></div>
+    <div class="top-bar" data-slide="04 / 13"><span>How to read the field</span></div>
+    <h2>Ten protocols, sliced <em>five ways</em>.</h2>
+
+    <div class="obs-grid" style="margin-top: 16px;">
+      <div class="obs">
+        <div class="obs-num">01</div>
+        <h3>How is the rate discovered?</h3>
+        <ul>
+          <li><strong>Auction</strong> &mdash; Term (periodic, single fair price)</li>
+          <li><strong>Bond price</strong> &mdash; TermMax (AMM) · Fira (supply/demand)</li>
+          <li><strong>Order book</strong> &mdash; Secured Finance (CLOB + Itayose)</li>
+          <li><strong>Intent match</strong> &mdash; Morpho Midnight (managed liquidity)</li>
+          <li><strong>Token you hold</strong> &mdash; Inverse DBR · <strong>Pool utilization</strong> &mdash; Exactly</li>
+          <li><strong>Swap overlay</strong> &mdash; IPOR · <strong>Borrower decree</strong> &mdash; Wildcat</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">02</div>
+        <h3>Collateral model</h3>
+        <ul>
+          <li><strong>Overcollateralized crypto</strong> &mdash; Term, TermMax, Fira, Secured Finance, Inverse, Exactly</li>
+          <li><strong>Undercollateralized / permissioned</strong> &mdash; Wildcat, Maple</li>
+          <li>This split, more than mechanism, decides who can actually use a protocol.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">03</div>
+        <h3>Capital efficiency &amp; leverage</h3>
+        <ul>
+          <li><strong>TermMax</strong> offers one-click leverage / looping inside the fixed-rate frame.</li>
+          <li>The former leverage leader, <strong>Notional</strong>, is gone &mdash; its ~$843M evaporated when it wound down after the Balancer hack.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">04</div>
+        <h3>Flexibility vs. predictability</h3>
+        <ul>
+          <li>Most offer <strong>true fixed terms</strong>.</li>
+          <li><strong>Inverse&#x2019;s DBR</strong> trades a fixed end-date for rate certainty + duration flexibility.</li>
+          <li><strong>IPOR</strong> adds predictability on top of an existing Aave borrow.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">05</div>
+        <h3>Maturity &amp; scale</h3>
+        <ul>
+          <li>Oldest: <strong>Inverse</strong> (~2020). Newest: <strong>Morpho Midnight</strong> (2026, pre-launch) and <strong>Fira</strong> (early 2026, big gross loan book but only ~$5M net TVL).</li>
+          <li>By net TVL, <strong>Wildcat</strong> (~$150M) leads, <strong>Liquity V2</strong> (~$74M) is next; most others &mdash; Fira included &mdash; are sub-$75M.</li>
+          <li>Battle-tested through an exploit: <strong>Exactly</strong> (and Inverse, twice). <strong>Notional</strong>, by contrast, did not survive the Balancer hack.</li>
+        </ul>
+      </div>
+      <div class="obs">
+        <div class="obs-num">06</div>
+        <h3>For an institutional / RWA lens</h3>
+        <ul>
+          <li>The real balance sheets sit one tier up: <strong>Maple</strong> (~$2.1B credit), <strong>Centrifuge</strong> (~$1.6B tranched funds) and a <strong>~$15B</strong> tokenized-Treasury market &mdash; far bigger than the DeFi-native primitives.</li>
+          <li>Among the natives, permissioned <strong>Wildcat</strong> maps closest to real financing; <strong>Morpho Midnight</strong> is the one to watch <em>if</em> it ships with institutional curator liquidity.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer"><span>Cross-cutting observations</span><span>The decision lenses</span></div>
+  </section>
+
+  <!-- ============ 05 – MATRIX ============ -->
+  <section class="slide">
+    <div class="top-bar" data-slide="05 / 13"><span>Side by side</span></div>
     <h2>The <em>comparison</em> matrix.</h2>
     <div class="matrix-wrap">
       <table class="matrix">
@@ -885,9 +950,9 @@
     <div class="footer"><span>Comparison matrix</span><span>TVL: DefiLlama, Jun 2026 · approximate</span></div>
   </section>
 
-  <!-- ============ 05 – MORPHO MIDNIGHT ============ -->
+  <!-- ============ 06 – MORPHO MIDNIGHT ============ -->
   <section class="slide">
-    <div class="top-bar protocol-bar" data-slide="05 / 13"><span>The intent-based bet</span></div>
+    <div class="top-bar protocol-bar" data-slide="06 / 13"><span>The intent-based bet</span></div>
     <div class="protocol-badge" style="margin-bottom: 24px;">
       <span class="num-block">01</span>
       <span class="name-block">Morpho Midnight <span class="prelaunch-badge" style="border-color:#F2EBDD; color:#F2EBDD;">Pre-launch</span></span>
@@ -914,9 +979,9 @@
     <div class="footer"><span>01 · Morpho Midnight</span><span>Intent-based · pre-launch</span></div>
   </section>
 
-  <!-- ============ 06 – TERM FINANCE ============ -->
+  <!-- ============ 07 – TERM FINANCE ============ -->
   <section class="slide">
-    <div class="top-bar protocol-bar" data-slide="06 / 13"><span>The auction bet</span></div>
+    <div class="top-bar protocol-bar" data-slide="07 / 13"><span>The auction bet</span></div>
     <div class="protocol-badge" style="margin-bottom: 24px;">
       <span class="num-block">02</span>
       <span class="name-block">Term Finance</span>
@@ -939,9 +1004,9 @@
     <div class="footer"><span>02 · Term Finance</span><span>Auctions · multi-chain</span></div>
   </section>
 
-  <!-- ============ 07 – TOKENIZED-BOND FAMILY ============ -->
+  <!-- ============ 08 – TOKENIZED-BOND FAMILY ============ -->
   <section class="slide">
-    <div class="top-bar" data-slide="07 / 13"><span>The tokenized-bond model</span></div>
+    <div class="top-bar" data-slide="08 / 13"><span>The tokenized-bond model</span></div>
     <h2>Turn the loan into a <em>tradable bond</em>.</h2>
     <p class="subtitle">Strip the jargon and it is the oldest trick in fixed income: sell a dollar for ninety cents today, repay a dollar at maturity &mdash; a zero-coupon bond with a wallet address. The model&#x2019;s pioneer, <strong>Notional</strong>, is now in the graveyard (page 12), which tells you most of what you need: this is the most crowded corner of the field and the one that has already buried its leader. Three live attempts remain &mdash; <strong>TermMax</strong> on an AMM, <strong>Fira</strong> on supply-and-demand markets, and <strong>Secured Finance</strong> on a real order book.</p>
 
@@ -985,9 +1050,9 @@
     <div class="footer"><span>03&ndash;05 · TermMax, Fira &amp; Secured Finance</span><span>Tokenized zero-coupon bonds</span></div>
   </section>
 
-  <!-- ============ 08 – RATE-AS-A-TOKEN / POOLS ============ -->
+  <!-- ============ 09 – RATE-AS-A-TOKEN / POOLS ============ -->
   <section class="slide">
-    <div class="top-bar" data-slide="08 / 13"><span>Rights &amp; pools</span></div>
+    <div class="top-bar" data-slide="09 / 13"><span>Rights &amp; pools</span></div>
     <h2>Price the <em>right to borrow</em>,<br>or the pool itself.</h2>
 
     <div style="margin-top: 12px;">
@@ -1018,9 +1083,9 @@
     <div class="footer"><span>06&ndash;07 · Inverse &amp; Exactly</span><span>Borrowing rights · maturity pools</span></div>
   </section>
 
-  <!-- ============ 09 – OVERLAY & BORROWER-LED ============ -->
+  <!-- ============ 10 – OVERLAY & BORROWER-LED ============ -->
   <section class="slide">
-    <div class="top-bar" data-slide="09 / 13"><span>Overlay &amp; borrower-led</span></div>
+    <div class="top-bar" data-slide="10 / 13"><span>Overlay &amp; borrower-led</span></div>
     <h2>Hedge the float, or <em>write your own terms</em>.</h2>
 
     <div style="margin-top: 12px;">
@@ -1068,9 +1133,9 @@
     <div class="footer"><span>08&ndash;10 · IPOR, Wildcat &amp; Liquity V2</span><span>Overlay · borrower-defined</span></div>
   </section>
 
-  <!-- ============ 10 – TOKENIZED T-BILLS ============ -->
+  <!-- ============ 11 – TOKENIZED T-BILLS ============ -->
   <section class="slide">
-    <div class="top-bar" data-slide="10 / 13"><span>The institutional / RWA frontier · I</span></div>
+    <div class="top-bar" data-slide="11 / 13"><span>The institutional / RWA frontier · I</span></div>
     <h2>Tokenized T-bills: the<br>on-chain <em>risk-free rate</em>.</h2>
     <p class="subtitle">Every fixed borrowing rate is implicitly priced against a risk-free benchmark. On-chain, that benchmark now exists &mdash; a <strong>~$15B</strong> tokenized US-Treasury market yielding a blended <strong>~3.3%</strong>, and increasingly the collateral that backs on-chain credit.</p>
 
@@ -1100,9 +1165,9 @@
     <div class="footer"><span>RWA frontier I · tokenized Treasuries</span><span>AUM: rwa.xyz, Jun 2026</span></div>
   </section>
 
-  <!-- ============ 11 – INSTITUTIONAL CREDIT & RWA TRANCHING ============ -->
+  <!-- ============ 12 – INSTITUTIONAL CREDIT & RWA TRANCHING ============ -->
   <section class="slide">
-    <div class="top-bar" data-slide="11 / 13"><span>The institutional / RWA frontier · II</span></div>
+    <div class="top-bar" data-slide="12 / 13"><span>The institutional / RWA frontier · II</span></div>
     <h2>Where fixed-rate meets<br><em>real balance sheets</em>.</h2>
 
     <div style="margin-top: 8px;">
@@ -1141,9 +1206,9 @@
     <div class="footer"><span>RWA frontier II · credit &amp; tranching</span><span>TVL: DefiLlama, Jun 2026</span></div>
   </section>
 
-  <!-- ============ 10 – ADJACENT & WOUND DOWN ============ -->
+  <!-- ============ 13 – ADJACENT & WOUND DOWN ============ -->
   <section class="slide">
-    <div class="top-bar" data-slide="12 / 13"><span>Adjacent, related &amp; retired</span></div>
+    <div class="top-bar" data-slide="13 / 13"><span>Adjacent, related &amp; retired</span></div>
     <h2>The neighbours &mdash; and the <em>graveyard</em>.</h2>
 
     <div class="two-col">
@@ -1175,71 +1240,6 @@
       </div>
     </div>
     <div class="footer"><span>Adjacent &amp; retired</span><span>Scope discipline</span></div>
-  </section>
-
-  <!-- ============ 11 – CROSS-CUTTING ============ -->
-  <section class="slide">
-    <div class="top-bar" data-slide="13 / 13"><span>How to read the field</span></div>
-    <h2>Ten protocols, sliced <em>five ways</em>.</h2>
-
-    <div class="obs-grid" style="margin-top: 16px;">
-      <div class="obs">
-        <div class="obs-num">01</div>
-        <h3>How is the rate discovered?</h3>
-        <ul>
-          <li><strong>Auction</strong> &mdash; Term (periodic, single fair price)</li>
-          <li><strong>Bond price</strong> &mdash; TermMax (AMM) · Fira (supply/demand)</li>
-          <li><strong>Order book</strong> &mdash; Secured Finance (CLOB + Itayose)</li>
-          <li><strong>Intent match</strong> &mdash; Morpho Midnight (managed liquidity)</li>
-          <li><strong>Token you hold</strong> &mdash; Inverse DBR · <strong>Pool utilization</strong> &mdash; Exactly</li>
-          <li><strong>Swap overlay</strong> &mdash; IPOR · <strong>Borrower decree</strong> &mdash; Wildcat</li>
-        </ul>
-      </div>
-      <div class="obs">
-        <div class="obs-num">02</div>
-        <h3>Collateral model</h3>
-        <ul>
-          <li><strong>Overcollateralized crypto</strong> &mdash; Term, TermMax, Fira, Secured Finance, Inverse, Exactly</li>
-          <li><strong>Undercollateralized / permissioned</strong> &mdash; Wildcat, Maple</li>
-          <li>This split, more than mechanism, decides who can actually use a protocol.</li>
-        </ul>
-      </div>
-      <div class="obs">
-        <div class="obs-num">03</div>
-        <h3>Capital efficiency &amp; leverage</h3>
-        <ul>
-          <li><strong>TermMax</strong> offers one-click leverage / looping inside the fixed-rate frame.</li>
-          <li>The former leverage leader, <strong>Notional</strong>, is gone &mdash; its ~$843M evaporated when it wound down after the Balancer hack.</li>
-        </ul>
-      </div>
-      <div class="obs">
-        <div class="obs-num">04</div>
-        <h3>Flexibility vs. predictability</h3>
-        <ul>
-          <li>Most offer <strong>true fixed terms</strong>.</li>
-          <li><strong>Inverse&#x2019;s DBR</strong> trades a fixed end-date for rate certainty + duration flexibility.</li>
-          <li><strong>IPOR</strong> adds predictability on top of an existing Aave borrow.</li>
-        </ul>
-      </div>
-      <div class="obs">
-        <div class="obs-num">05</div>
-        <h3>Maturity &amp; scale</h3>
-        <ul>
-          <li>Oldest: <strong>Inverse</strong> (~2020). Newest: <strong>Morpho Midnight</strong> (2026, pre-launch) and <strong>Fira</strong> (early 2026, big gross loan book but only ~$5M net TVL).</li>
-          <li>By net TVL, <strong>Wildcat</strong> (~$150M) leads, <strong>Liquity V2</strong> (~$74M) is next; most others &mdash; Fira included &mdash; are sub-$75M.</li>
-          <li>Battle-tested through an exploit: <strong>Exactly</strong> (and Inverse, twice). <strong>Notional</strong>, by contrast, did not survive the Balancer hack.</li>
-        </ul>
-      </div>
-      <div class="obs">
-        <div class="obs-num">06</div>
-        <h3>For an institutional / RWA lens</h3>
-        <ul>
-          <li>The real balance sheets sit one tier up: <strong>Maple</strong> (~$2.1B credit), <strong>Centrifuge</strong> (~$1.6B tranched funds) and a <strong>~$15B</strong> tokenized-Treasury market &mdash; far bigger than the DeFi-native primitives.</li>
-          <li>Among the natives, permissioned <strong>Wildcat</strong> maps closest to real financing; <strong>Morpho Midnight</strong> is the one to watch <em>if</em> it ships with institutional curator liquidity.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer"><span>Cross-cutting observations</span><span>The decision lenses</span></div>
   </section>
 
   <!-- ============ CLOSING ============ -->
